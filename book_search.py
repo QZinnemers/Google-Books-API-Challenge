@@ -83,21 +83,23 @@ def specificData(author):
 def yamlData():
     collection = ["9780141036144", "9780099518471",
                   "9780099560432", "9781784971571"]
-   # extractedData = {}
 
     for x in collection:
         res = requests.get(
             f'https://www.googleapis.com/books/v1/volumes?q=isbn:'+x+'&=')
         bookJson = res.json()  # convert result  to json
+
+        yamlFile = open("bookData.yml", "w")
         my_dict = {}
         my_dict['id'] = bookJson['items'][0]['volumeInfo']['title']
         my_dict['title'] = bookJson['items'][0]['volumeInfo']['title']
         my_dict['isbn'] = bookJson['items'][0]['volumeInfo']['industryIdentifiers'][-1]['identifier']
-        # extracted json to yaml
-        print(yaml.dump(my_dict, default_flow_style=False))
-        #extractedData |= my_dict
+        my_dict['pages'] = bookJson['items'][0]['volumeInfo']['pageCount']
 
-   # print(yaml.dump(extractedData, defult_flow_style=False))
+        # print(yaml.dump(my_dict, default_flow_style=False))  # extracted json to yaml
+
+        yamlFile.write(yaml.dump(my_dict, default_flow_style=False))
+        yamlFile.close()
 
 
 yamlData()
