@@ -1,0 +1,1 @@
+extractedData.append(my_dict)
